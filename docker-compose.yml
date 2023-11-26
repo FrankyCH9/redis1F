@@ -1,0 +1,35 @@
+version: '3'
+
+networks:
+  my_network:
+    driver: bridge
+
+services:
+  api:
+    image: linkextractor-api:step5-python
+    build: ./api
+    ports:
+      - "5000:5000"
+    environment:
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - redis
+    networks:
+      - my_network
+  
+  api2:
+    image: instancesecond:step5-python
+    build: ./api2
+    ports:
+      - "5001:5000"
+    environment:
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - redis
+    networks:
+      - my_network
+      
+  redis:
+    image: redis
+    networks:
+      - my_network
