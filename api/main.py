@@ -69,7 +69,7 @@ def recibir_datos():
 
         consolidated_dfmi = columnas(peli, col1, col2, col3)
         #consolidated_dfmi = consolidated_dfmi.head(300)
-        consolidated_dfmi = pd.concat([consolidated_dfmi.query(f'userId == {numerox}'), consolidated_dfmi.head(300)])
+        consolidated_dfmi = pd.concat([consolidated_dfmi.query(f'userId == {numerox}'), consolidated_dfmi.head(200)])
         consolidated_dfmi = consolidated_dfmi.loc[~consolidated_dfmi.index.duplicated(keep='first')]
         consolidated_dfmi = consolidated_dfmi.fillna(0)
 

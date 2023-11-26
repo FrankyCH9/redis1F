@@ -18,7 +18,7 @@ redis_conn = redis.from_url(os.getenv("REDIS_URL", "redis://localhost:6379"))
 
 @app.route("/")
 def index():
-    return "Usage: http://<hostname>[:<prt>]/apix/<url>"
+    return "Usage: http://<hostname>[:<prt>]/apiz/<url>"
 
 #----------------------------------------------------------------
 total = {}
@@ -38,7 +38,7 @@ def recibir_csv():
     
 
 
-@app.route('/apix/valor', methods=['POST'])
+@app.route('/apiz/valor', methods=['POST'])
 def recibir_datos():
     global valoresfinal , peliculasp
     if request.method == 'POST':
@@ -68,7 +68,7 @@ def recibir_datos():
 
         consolidated_dfmi = columnas(peli, col1, col2, col3)
         #consolidated_dfmi = pd.concat([consolidated_dfmi.iloc[:numerox], consolidated_dfmi.iloc[300:]])
-        consolidated_dfmi = pd.concat([consolidated_dfmi.query(f'userId == {numerox}'), consolidated_dfmi.iloc[300:]])
+        consolidated_dfmi = pd.concat([consolidated_dfmi.query(f'userId == {numerox}'), consolidated_dfmi.iloc[400:]])
         consolidated_dfmi = consolidated_dfmi.loc[~consolidated_dfmi.index.duplicated(keep='first')]
         consolidated_dfmi = consolidated_dfmi.fillna(0)
 
@@ -132,16 +132,16 @@ def recibir_datos():
 
 
 
-@app.route('/apix/valor', methods=['GET'])
+@app.route('/apiz/valor', methods=['GET'])
 def get_users():
     # Intenta recuperar datos desde Redis
     cached_data = redis_conn.get('valoresfinal') 
     if cached_data:
         return jsonify(json.loads(cached_data))
     else:
-        return jsonify({"mensaje": "No hay valores finales almacenados en Redis para la instancia 2"})
+        return jsonify({"mensaje": "No hay valores finales almacenados en Redis para la instancia 3"})
 
-@app.route('/apix/peliculas', methods=['GET'])
+@app.route('/apiz/peliculas', methods=['GET'])
 def get_peliculas():
     peliculas_cached = redis_conn.get('peliculas') 
     if peliculas_cached:
@@ -151,7 +151,7 @@ def get_peliculas():
         return jsonify({"mensaje": "No hay valores finales almacenados en Redis"})
     
 
-@app.route('/apix/csv', methods=['GET'])
+@app.route('/apiz/csv', methods=['GET'])
 def get_csv():
     csv_cached = redis_conn.get('csv') 
     if csv_cached:
