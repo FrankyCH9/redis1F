@@ -40,6 +40,31 @@ services:
       - redis
     networks:
       - my_network
+
+     
+  api4:
+    image: instancia4:step5-python
+    build: ./api3
+    ports:
+      - "5003:5000"
+    environment:
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - redis
+    networks:
+      - my_network
+
+  api5:
+    image: instancia5:step5-python
+    build: ./api3
+    ports:
+      - "5004:5000"
+    environment:
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - redis
+    networks:
+      - my_network
       
   redis:
     image: redis
