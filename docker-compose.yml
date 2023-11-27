@@ -44,7 +44,7 @@ services:
      
   api4:
     image: instancia4:step5-python
-    build: ./api3
+    build: ./api4
     ports:
       - "5003:5000"
     environment:
@@ -56,7 +56,7 @@ services:
 
   api5:
     image: instancia5:step5-python
-    build: ./api3
+    build: ./api5
     ports:
       - "5004:5000"
     environment:
