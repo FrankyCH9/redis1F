@@ -24,18 +24,19 @@ def index():
 total = {}
 valoresfinal = {}
 peliculasp = {}
+df = pd.DataFrame()
 
 @app.route('/api/csv', methods=['POST'])
 def recibir_csv():
-   
+    global df
     if request.method == 'POST':
         data = request.get_json()  
         nombre = data.get('obj')  
+        df = pd.DataFrame(nombre)
         redis_conn.set('csv', json.dumps(nombre))
         return jsonify({"csv cargado correctamente a redis"})
     else:
         return jsonify({"mensaje": "Esta ruta solo acepta solicitudes POST"})
-    
 
 
 @app.route('/api/valor', methods=['POST'])
@@ -44,23 +45,14 @@ def recibir_datos():
     if request.method == 'POST':
         data = request.get_json()  
 
-        csv_cached = redis_conn.get('csv')
-        csv_data = json.loads(csv_cached)
-
-        #nombre = data.get('obj')  
-        
-
         col1 = data.get('col1')
         col2 = data.get('col2')
         col3 = data.get('col3')
 
         numero = data.get('numero')  
         numerox = int(numero)
-
-        #peli = pd.DataFrame(nombre)
-        peli = pd.DataFrame(csv_data)
-        #peli = peli.head(1000)
-
+        
+        peli = df
 
         peli[col3] = pd.to_numeric(peli[col3], errors='coerce')
         #peli['movieId'] = pd.to_numeric(peli['movieId'], errors='coerce')
@@ -69,6 +61,7 @@ def recibir_datos():
 
         consolidated_dfmi = columnas(peli, col1, col2, col3)
         #consolidated_dfmi = consolidated_dfmi.head(300)
+        #consolidated_dfmi = pd.concat([consolidated_dfmi.query(f'userId == {numerox}'), consolidated_dfmi.head(300)])
         consolidated_dfmi = pd.concat([consolidated_dfmi.query(f'userId == {numerox}'), consolidated_dfmi.head(1000)])
         consolidated_dfmi = consolidated_dfmi.loc[~consolidated_dfmi.index.duplicated(keep='first')]
         consolidated_dfmi = consolidated_dfmi.fillna(0)
@@ -105,14 +98,10 @@ def recibir_datos():
         dictionary_final = dict(zip(newx.index, newx.values))
         peliculasp = dictionary_final
 
-        '''peli = pd.DataFrame(nombre)
-        data = peli['rating'].value_counts().sort_index(ascending=False)
-        diccionario_resultante = data.to_dict()
-        valoresfinal = diccionario_resultante'''
 
         redis_conn.set('valoresfinal', json.dumps(valoresfinal))
         redis_conn.set('peliculas', json.dumps(peliculasp))
-
+        
 
         return jsonify(valoresfinal)
     else:
