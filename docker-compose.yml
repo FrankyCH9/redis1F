@@ -16,6 +16,8 @@ services:
       - redis
     networks:
       - my_network
+    volumes:
+      - ./shared_data:/shared_data
   
   api2:
     image: instancesecond:step5-python
@@ -28,6 +30,8 @@ services:
       - redis
     networks:
       - my_network
+    volumes:
+      - ./shared_data:/shared_data
     
   api3:
     image: instancia3:step5-python
@@ -40,6 +44,8 @@ services:
       - redis
     networks:
       - my_network
+    volumes:
+      - ./shared_data:/shared_data
 
      
   api4:
@@ -53,6 +59,8 @@ services:
       - redis
     networks:
       - my_network
+    volumes:
+      - ./shared_data:/shared_data
 
   api5:
     image: instancia5:step5-python
@@ -65,6 +73,8 @@ services:
       - redis
     networks:
       - my_network
+    volumes:
+      - ./shared_data:/shared_data
       
   redis:
     image: redis

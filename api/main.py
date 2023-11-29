@@ -25,6 +25,7 @@ total = {}
 valoresfinal = {}
 peliculasp = {}
 df = pd.DataFrame()
+csv_path = '/shared_data/movie.csv'
 
 @app.route('/api/csv', methods=['POST'])
 def recibir_csv():
@@ -33,6 +34,8 @@ def recibir_csv():
         data = request.get_json()  
         nombre = data.get('obj')  
         df = pd.DataFrame(nombre)
+        csv_path = '/shared_data/movie.csv'
+        df.to_csv(csv_path, index=False)
         redis_conn.set('csv', json.dumps(nombre))
         return jsonify({"csv cargado correctamente a redis"})
     else:
