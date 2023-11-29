@@ -44,8 +44,8 @@ def recibir_datos():
     if request.method == 'POST':
         data = request.get_json()  
 
-        csv_cached = redis_conn.get('csv')
-        csv_data = json.loads(csv_cached)
+        #csv_cached = redis_conn.get('csv')
+        #csv_data = json.loads(csv_cached)
 
         #nombre = data.get('obj')  
         
@@ -56,9 +56,13 @@ def recibir_datos():
 
         numero = data.get('numero')  
         numerox = int(numero)
+        csv_path = '/shared_data/movie.csv'
+        af = pd.read_csv(csv_path)
+        
+        peli = af
 
         #peli = pd.DataFrame(nombre)
-        peli = pd.DataFrame(csv_data)
+        #peli = pd.DataFrame(csv_data)
 
 
         peli[col3] = pd.to_numeric(peli[col3], errors='coerce')
