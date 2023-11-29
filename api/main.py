@@ -54,8 +54,10 @@ def recibir_datos():
 
         numero = data.get('numero')  
         numerox = int(numero)
+        csv_path = '/shared_data/movie.csv'
+        af = pd.read_csv(csv_path)
         
-        peli = df
+        peli = af
 
         peli[col3] = pd.to_numeric(peli[col3], errors='coerce')
         #peli['movieId'] = pd.to_numeric(peli['movieId'], errors='coerce')
