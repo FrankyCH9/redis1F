@@ -3,6 +3,7 @@ flask
 redis
 requests
 pandas
-flask-cors
+uvicorn
 numpy
 scipy
+python-dotenv
